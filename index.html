@@ -10,21 +10,33 @@
 
     <!-- Favicon -->
     <link rel="icon" href="./img/chicken.webp" />
+
+    <!-- 絵文字 -->
+    <script src="https://kit.fontawesome.com/77e6d61b62.js" crossorigin="anonymous"></script>
+
+    <!-- googleフォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Kiwi+Maru:wght@300;400;500&display=swap" rel="stylesheet">
   </head>
 
   <body>
-    <h1>Let's cooking</h1>
-
+    <header>
+      <h1 class="title">Let's cooking</h1>
+      <img class="cook" src="./img/burger_transrate.png" alt="" />
+    </header>
     <!-- コンテンツ表示画面 -->
     <div class="">
       <div id="output" class=""></div>
-      <div class="">
+      <div class="in">
         <textarea
           id="text"
           class=""
-          placeholder="文章を入力してください"
+          placeholder="なにを食べたい気分ですか？"
         ></textarea>
-        <button id="send" class="">送信</button>
+        <button id="send" class="">
+          <i class="fa-solid fa-paper-plane" style="color: rgb(87, 80, 80)"></i>
+        </button>
       </div>
     </div>
 
@@ -45,13 +57,7 @@
       } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
       // Your web app's Firebase configuration
       const firebaseConfig = {
-        apiKey: "AIzaSyA9sJTIQsNpTSLRrMo9XcIP-F6YljgPYdo",
-        authDomain: "gsdev27-141c3.firebaseapp.com",
-        databaseURL: "https://gsdev27-141c3-default-rtdb.firebaseio.com",
-        projectId: "gsdev27-141c3",
-        storageBucket: "gsdev27-141c3.appspot.com",
-        messagingSenderId: "232466903338",
-        appId: "1:232466903338:web:bbf599cdfaa464ad72ae53",
+        ,
       };
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app); //RealtimeDBに接続
@@ -77,14 +83,20 @@
 
         // //CHAT GPTを呼び出す
 
-        const OPENAI_APIKEY = "";
+        const OPENAI_APIKEY =
+          "";
         const URL = "https://api.openai.com/v1/chat/completions";
         const systemPrompt = `
-                あなたはミシュラン三ツ星のプロの料理人です。
-                以下の制約条件を厳密に守ってロールプレイを行ってください。
+                あなたはプロの料理人です。
+                ユーザーからの朝食、昼食、夕食、おやつに関する問い合わせに対応します。
+                ユーザーに迅速かつ分かりやすい献立を提供することが目的です。
+                以下の出力条件を厳密に守ってロールプレイを行ってください。
 
-                #制約条件:
-
+                #出力条件:
+                1回目の返答で5つの料理を提示する。
+                ##料理を選択した場合
+                ・料理の詳細を記載する。
+                ・レシピを表示する。
                 `;
 
         async function getResponse() {
@@ -139,22 +151,20 @@
 
         if (msg.uname == "you") {
           let html = `
-                <div class="balloon_r">
+                <div class="msg-you">
                     <div class="says"><p>${msg.text}<p></div>
                 </div>
                 `;
 
           $("#output").append(html);
-        }
-
-        if (msg.uname == "AI") {
+        } else {
           let html = `
-                <div class="balloon_l">
+                <div class="msg-gpt">
                     <div class="says"><p>${msg.text}<p></div>
                 </div>
                 `;
 
-          $("#output").prepend(html);
+          $("#output").append(html);
         }
       });
     </script>
