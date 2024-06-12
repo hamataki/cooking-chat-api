@@ -1,11 +1,162 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Let's cooking</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="./img/chicken.webp" />
+  </head>
+
+  <body>
+    <h1>Let's cooking</h1>
+
+    <!-- コンテンツ表示画面 -->
+    <div class="">
+      <div id="output" class=""></div>
+      <div class="">
+        <textarea
+          id="text"
+          class=""
+          placeholder="文章を入力してください"
+        ></textarea>
+        <button id="send" class="">送信</button>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        push,
+        set,
+        onChildAdded,
+        remove,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyA9sJTIQsNpTSLRrMo9XcIP-F6YljgPYdo",
+        authDomain: "gsdev27-141c3.firebaseapp.com",
+        databaseURL: "https://gsdev27-141c3-default-rtdb.firebaseio.com",
+        projectId: "gsdev27-141c3",
+        storageBucket: "gsdev27-141c3.appspot.com",
+        messagingSenderId: "232466903338",
+        appId: "1:232466903338:web:bbf599cdfaa464ad72ae53",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app); //RealtimeDBに接続
+      const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
+
+      //データ登録(Click)
+      $("#send").on("click", function () {
+        const uname = "you";
+        const text = $("#text").val();
+
+        console.log(uname, "名前");
+        console.log(text, "テキスト");
+
+        const msg = {
+          uname: "you",
+          text: $("#text").val(),
+        };
+
+        const newPostRef = push(dbRef);
+        set(newPostRef, msg);
+
+        $("#text").val("");
+
+        // //CHAT GPTを呼び出す
+
+        const OPENAI_APIKEY = "";
+        const URL = "https://api.openai.com/v1/chat/completions";
+        const systemPrompt = `
+                あなたはミシュラン三ツ星のプロの料理人です。
+                以下の制約条件を厳密に守ってロールプレイを行ってください。
+
+                #制約条件:
+
+                `;
+
+        async function getResponse() {
+          try {
+            const response = await axios.post(
+              URL,
+              {
+                model: "gpt-3.5-turbo",
+                messages: [
+                  { role: "system", content: systemPrompt },
+                  { role: "user", content: text },
+                ],
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${OPENAI_APIKEY}`,
+                },
+              }
+            );
+            var chatgpt_response = response.data.choices[0].message.content;
+            // $("#response_text").val(chatgpt_response);
+
+            const resuname = "AI";
+            const restext = chatgpt_response;
+
+            const resmsg = {
+              uname: resuname,
+              text: restext,
+            };
+
+            console.log(resuname, "名前");
+            console.log(restext, "テキスト");
+
+            const newPostRef2 = push(dbRef);
+            set(newPostRef2, resmsg);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        getResponse();
+      });
+
+      //データ登録(Enter)
+
+      //最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
+      //メッセージを登録すると画面に表示される
+      //AIなら左側、自分なら右側にバルーンが表示される
+      onChildAdded(dbRef, function (data) {
+        const msg = data.val();
+        const key = data.key;
+
+        if (msg.uname == "you") {
+          let html = `
+                <div class="balloon_r">
+                    <div class="says"><p>${msg.text}<p></div>
+                </div>
+                `;
+
+          $("#output").append(html);
+        }
+
+        if (msg.uname == "AI") {
+          let html = `
+                <div class="balloon_l">
+                    <div class="says"><p>${msg.text}<p></div>
+                </div>
+                `;
+
+          $("#output").prepend(html);
+        }
+      });
+    </script>
+  </body>
 </html>
