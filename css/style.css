@@ -1,0 +1,163 @@
+body {
+  min-width: 250px;
+}
+
+h1 {
+  text-align: center;
+  margin: 50px 0;
+  font-size: 25px;
+}
+
+input {
+  padding: 10px;
+}
+
+#put{
+  min-width: 250px;
+  display: flex;
+  margin: 0 auto 50px;
+  justify-content: center
+}
+#uname{
+  max-width: 445px;
+  width: 100%;
+  display: block;
+  justify-content: center;
+}
+#preview{
+  margin: 0 auto;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 5px;
+}
+img {
+  width: 10%;
+  height: 10%;
+} 
+#in{
+  min-width: 250px;
+  display: flex;
+  margin: 0 auto 50px;
+  justify-content: center
+}
+
+textarea {
+  width: 400PX;
+  height: 50px;
+  padding: 10px;
+  display: block;
+  resize: none;
+  border-radius: 10px;
+  color: black;
+}
+
+button {
+  width: 45px;
+  height: 40px;
+  display: block;
+  font-size: 16px;
+  margin-top: auto;
+  margin-left: 4px;
+  border-radius:  10px;
+  background-color: white;
+  border-color: rgb(51 112 211 / 0.6);
+}
+
+#output {
+  min-width: 250px;
+  max-width: 445px;
+  display: block;
+  min-height: 550px;
+  height: 100%;
+  border: 1px solid #cccccc;
+  margin: 0 auto;
+  border-radius: 8px;
+  padding: 10px;
+  line-height: 20px;
+  background-color: turquoise;
+}
+
+.time{
+  margin-right: auto;
+  width: 200px;
+  padding: 4px;
+  margin-top: 10px;
+}
+.msg{
+  margin-right: auto;
+  margin-bottom: 20px;
+  word-wrap: break-word;/* 吹き出し内で自動で改行 */
+  position: relative;
+  width: 200px;
+  padding: 1rem 1rem 1rem 1.5rem;
+  border-radius: 30px;
+  background-color: rgb(247, 253, 253);
+  color: black;
+}
+
+/* 吹き出しを可愛く */
+.msg:before,
+.msg:after {
+  position: absolute;
+  border-radius: 30%;
+  background-color: rgb(247, 253, 253);
+  content: "";
+}
+.msg:before {
+  top: 103%;
+  left: 40px;
+  height: 10px;
+  width: 10px;
+}
+.msg:after {
+  top: 120%;
+  left: 50px;
+  height: 6px;
+  width: 6px;
+}
+/* 入力画像の文字を変更 */
+label {
+  margin-left: 3em;
+}
+#file-input {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 200px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  background-color: #55f;
+  border-radius: 8px;
+  color: white;
+  box-shadow: #888 2px 2px 1px;
+  cursor: pointer;
+}
+#file-input:hover {
+  background-color: #88f;
+}
+#file-input:hover {
+  background-color: #88f;
+}
+#file-input:active {
+  box-shadow: #888 1px 1px 1px;
+  position: relative;
+  top: 1px;
+  left: 1px;
+}
+#file-input input {
+  display: none;
+}
+.photo{
+  margin-top: 4px;
+  width: 20%;
+}
+.remove{
+  cursor: pointer;
+}
+.update{
+  cursor: pointer;
+}
