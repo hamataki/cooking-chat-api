@@ -1,4 +1,5 @@
 body {
+  position: relative;
   font-family: "Kiwi Maru", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
   min-width: 270px;
   text-align: center;
@@ -7,15 +8,15 @@ body {
 
 header{
   position: relative;
-  padding-top: 30px;
+  padding-top: 20px;
   background-color: #feb672;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .title {
   position: absolute;
   /*文字にabsolute*/
-  top: 30%;
+  top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 30px;
@@ -26,10 +27,13 @@ header{
 }
 .in {
   display: flex;
-  justify-content: center;
-  margin-top: 30px;
+  position: fixed;
+  bottom: -28px;/* 下に固定 */
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 #text{
+  font-family: "Kiwi Maru", "Noto Sans JP", "Hiragino Kaku Gothic ProN";
   padding: 10px;
   width: 400px;
   background-color: #fde7d2;
@@ -57,7 +61,7 @@ header{
   min-height: 550px;
   height: 100%;
   border: 1px solid #d9b097;
-  margin: 0 auto;
+  margin: 0 auto 100px;
   border-radius: 8px;
   padding: 10px;
   line-height: 20px;
@@ -76,6 +80,7 @@ header{
   text-align: left;
   background-color: rgb(245, 222, 179);
   border-radius: 8px;
+  word-wrap: break-word;/* 吹き出し内で自動で改行 */
 }
 .msg-gpt{
   max-width: 80%;
@@ -89,4 +94,31 @@ header{
   text-align: left;
   background-color: rgb(260, 243, 134);;
   border-radius: 8px;
+  word-wrap: break-word;/* 吹き出し内で自動で改行 */
 }
+#recipe {
+  display: flex;
+}
+.recipe-list {
+  list-style: none;
+  width: 25%;
+  margin-bottom: 0;
+}
+@media screen and (max-width: 670px) {
+  .recipe-list{
+    display: none
+  }
+}
+.recipe-img{
+  width: 50%;
+  height: 35%;
+}
+.recipe-title{
+  padding-top: 4px;
+  margin: 0 auto;
+  text-align: left;
+  width: 70%;
+}
+.search{
+    margin-bottom: 10px;
+  }

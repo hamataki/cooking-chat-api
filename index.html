@@ -12,12 +12,18 @@
     <link rel="icon" href="./img/chicken.webp" />
 
     <!-- 絵文字 -->
-    <script src="https://kit.fontawesome.com/77e6d61b62.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/77e6d61b62.js"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- googleフォント -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Kiwi+Maru:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Kiwi+Maru:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -26,6 +32,22 @@
       <img class="cook" src="./img/burger_transrate.png" alt="" />
     </header>
     <!-- コンテンツ表示画面 -->
+    <!-- <div class="input-group">
+      <input
+        type="text"
+        id="formText"
+        name="myFormText"
+        class="form-control"
+        placeholder="料理のタイトルを入力"
+        aria-label="books"
+        aria-describedby="btn"
+      />
+      <button id="btn" class="btn btn-primary">検索</button>
+    </div> -->
+    <div class="search">
+    <a href="https://recipe.rakuten.co.jp/">レシピ検索</a>
+    </div>
+    <div id="recipe"></div>
     <div class="">
       <div id="output" class=""></div>
       <div class="in">
@@ -57,7 +79,7 @@
       } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
       // Your web app's Firebase configuration
       const firebaseConfig = {
-        ,
+        
       };
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app); //RealtimeDBに接続
@@ -94,6 +116,8 @@
 
                 #出力条件:
                 1回目の返答で5つの料理を提示する。
+                5つの料理を答える際は毎回違うものを提示する。
+
                 ##料理を選択した場合
                 ・料理の詳細を記載する。
                 ・レシピを表示する。
@@ -118,7 +142,6 @@
               }
             );
             var chatgpt_response = response.data.choices[0].message.content;
-            // $("#response_text").val(chatgpt_response);
 
             const resuname = "AI";
             const restext = chatgpt_response;
@@ -152,7 +175,7 @@
         if (msg.uname == "you") {
           let html = `
                 <div class="msg-you">
-                    <div class="says"><p>${msg.text}<p></div>
+                    <p>${msg.text}<p>
                 </div>
                 `;
 
@@ -160,12 +183,37 @@
         } else {
           let html = `
                 <div class="msg-gpt">
-                    <div class="says"><p>${msg.text}<p></div>
+                    <p>${msg.text}<p>
                 </div>
                 `;
 
           $("#output").append(html);
         }
+      });
+
+      const url =
+      "";
+
+      const updateText = (data) => {
+        for (let i = 0; i < data.length; i++) {
+          const insertHtml = `
+            <li class="recipe-list">
+                <a href="${data[i].recipeUrl}" target="_blank">
+                    <img class="recipe-img" src="${data[i].foodImageUrl}" alt="${data[i].recipeTitle} 画像">
+                </a>
+                <h2>${data[i].recipeTitle}</h2>
+                <p class="recipe-title">${data[i].recipeDescription}</p>
+            </li>
+        `
+          $("#recipe").append(insertHtml);
+        }
+      };
+
+      $.getJSON(url, (data) => {
+        // データを取得したらやりたいことを書く
+        console.log(data.result);
+        const recipes = data.result;
+        updateText(recipes);
       });
     </script>
   </body>
